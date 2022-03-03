@@ -1,0 +1,228 @@
+﻿@page "/dashboard"
+@model NotesAppClient.Pages.DashboardModel
+@using Newtonsoft.Json
+
+@{
+    ViewData["Title"] = "Dashboard";
+
+    Dictionary<string, string> userData = JsonConvert.DeserializeObject<Dictionary<string, string>>(Convert.ToString(ViewData["userData"]));
+}
+
+<section>
+    <div class="row mb-3">
+        <div class="col-md-7">
+            <div class="my-shadow">
+                <div class="card-header p-3 light-bg-red">
+                    Your saved notes
+                </div>
+                <div class="card-body p-2">
+                    <select class="form-select" id="filterNotes">
+                        <option value="null" selected>Filter Reminder or Todo notes by time</option>
+                        <option value="day">This day</option>
+                        <option value="week">This week</option>
+                        <option value="month">This month</option>
+                        <option value="all">Show all</option>
+                    </select>
+                    
+                    @* javacript will add note elements here *@
+                    <div id="notesDiv">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="my-shadow">
+                <div class="card-header p-3 light-bg-blue">
+                    <h6>Create notes</h6>
+                </div>
+                <div class="card-body px-3 py-2">
+                    <div id="notes-tab">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#regular" type="button" role="tab">Regular</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#reminder" type="button" role="tab">Reminder</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#todo" type="button" role="tab">Todo</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#bookmark" type="button" role="tab">Bookmark</button>
+                            </li>
+                        </ul>
+
+                        @* notes creation form tabs *@
+                        <div class="tab-content py-3" id="myTabContent">
+                            @* regular *@
+                            <div class="tab-pane fade show active" id="regular" role="tabpanel">
+                                <div class="text-center mb-3">
+                                    <h6>Create regular note</h6>
+                                </div>
+                                <div>
+                                    <form class="notesForm" method="post">
+                                        <div class="mb-3">
+                                            <input class="form-control d-none" type="text" readonly name="type" value="regular" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <input class="form-control" type="text" placeholder="Title" name="title" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <input class="form-control" type="text" placeholder="Write some text" name="text" required>
+                                        </div>
+
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-primary saveBtn">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            @* reminder *@
+                            <div class="tab-pane fade" id="reminder" role="tabpanel">
+                                <div class="text-center mb-3">
+                                    <h6>Create a reminder</h6>
+                                </div>
+                                <div>
+                                    <form class="notesForm" method="post">
+                                        <div class="mb-3">
+                                            <input type="text" class="form-control d-none" readonly name="type" value="reminder" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <input class="form-control" type="text" placeholder="Title" name="title" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <input type="text" placeholder="Write some text" class="form-control" name="text" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="date" class="form-label">Datetime</label>
+                                            <input type="datetime-local" name="datetime" required class="form-control">
+                                        </div>
+
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-primary saveBtn">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            @* todo *@
+                            <div class="tab-pane fade" id="todo" role="tabpanel">
+                                <div class="text-center mb-3">
+                                    <h6>Create a todo task</h6>
+                                </div>
+                                <div>
+                                    <form class="notesForm" method="post">
+                                        <div class="mb-3">
+                                            <input type="text" class="form-control d-none" readonly name="type" value="todo" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <input class="form-control" type="text" placeholder="Title" name="title" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <input type="text" placeholder="Write some text" class="form-control" name="text" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="date" class="form-label">Due Datetime</label>
+                                            <input type="datetime-local" name="due" required class="form-control">
+                                        </div>
+
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-primary saveBtn">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            @* bookmark *@
+                            <div class="tab-pane fade" id="bookmark" role="tabpanel">
+                                <div class="text-center mb-3">
+                                    <h6>Save a bookmark</h6>
+                                </div>
+                                <div>
+                                    <form class="notesForm" method="post">
+                                        <div class="mb-3">
+                                            <input type="text" class="form-control d-none" readonly name="type" value="bookmark" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <input class="form-control" type="text" placeholder="Title" name="title" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <input type="text" placeholder="Web URL" class="form-control" name="url" required>
+                                        </div>
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-primary saveBtn">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* profile info *@
+    <div class="my-shadow">
+        <div class="card-header p-3 light-bg-green">
+            <h6>Your account informations</h6>
+        </div>
+        <div class="card-body p-3">
+            <div class="text-center">
+                <img class="avatar" src="~/images/user.png" alt="Default avatar" />
+            </div>
+            @* user infos *@
+            <div>
+                @if (userData != null)
+                {
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Full name</span>
+                                <input type="text" class="form-control" readonly value="@userData["fullName"]">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Email</span>
+                                <input type="text" class="form-control" readonly value="@userData["email"]">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group mb-3">
+                                <span class="input-group-text">Date of birth</span>
+                                <input type="text" class="form-control" readonly value="@userData["birthDate"]">
+                            </div>
+                        </div>
+                        <div>
+                            <input type="text" class="d-none" id="tokenProvider" readonly value="@ViewData["userData"]" />
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    @* toast notification *@
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-success">
+                <strong class="text-white me-auto">Success</strong>
+                <small>Just now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+            </div>
+            <div id="msg" class="toast-body">
+                <p id="test"></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+    <script type="module" src="~/js/notesSaveHandler.js"></script>
+    <script type="module" src="~/js/notesFilterHandler.js"></script>
+    <script type="module" src="~/js/todoUpdateHandler.js"></script>
+}
